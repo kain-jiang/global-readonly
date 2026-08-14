@@ -1,13 +1,30 @@
 {
   "name": "global-readonly",
   "displayName": "Global Readonly",
-  "description": "Toggle read-only mode for the entire workspace using VS Code's built-in files.readonlyInclude feature.",
-  "version": "0.0.2",
+  "description": "One-click toggle for making the entire workspace read-only, powered by VS Code's built-in files.readonlyInclude feature.",
+  "version": "0.0.3",
   "publisher": "kain-jiang",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/kain-jiang/global-readonly.git"
+  },
+  "homepage": "https://github.com/kain-jiang/global-readonly#readme",
+  "bugs": {
+    "url": "https://github.com/kain-jiang/global-readonly/issues"
+  },
+  "keywords": [
+    "readonly",
+    "read-only",
+    "readonlyInclude",
+    "lock",
+    "protect",
+    "workspace"
+  ],
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
   },
   "engines": {
     "vscode": "^1.77.0"
@@ -23,15 +40,18 @@
     "commands": [
       {
         "command": "globalReadonly.enable",
-        "title": "Global Readonly: Enable"
+        "title": "Global Readonly: Enable",
+        "category": "Global Readonly"
       },
       {
         "command": "globalReadonly.disable",
-        "title": "Global Readonly: Disable"
+        "title": "Global Readonly: Disable",
+        "category": "Global Readonly"
       },
       {
         "command": "globalReadonly.toggle",
-        "title": "Global Readonly: Toggle"
+        "title": "Global Readonly: Toggle",
+        "category": "Global Readonly"
       }
     ],
     "configuration": {

@@ -1,10 +1,17 @@
 # Change Log
 
+## [0.0.3]
+
+- Add extension icon and marketplace metadata (keywords, homepage, gallery banner).
+- Publish bilingual README (中文 / English) and community files (CONTRIBUTING, CODE_OF_CONDUCT, SECURITY).
+- Add GitHub issue templates.
+
 ## [0.0.2]
 
+- Fix lockout: `**` made `.vscode/settings.json` read-only so the toggle could not be flipped back. Enable now writes `files.readonlyExclude: { "**/.vscode/**": true }` **before** the include, and removes the include **before** the exclude when disabling, keeping the settings file writable at all times.
 - Add `globalReadonly.showStatusBar` setting to control the status bar item.
-- Respect the setting when toggling; status bar hides when disabled.
-- Preserve user-defined patterns when disabling (only `**` entry is removed).
+- Add integration tests (`@vscode/test-electron`) and a CI workflow.
+- Add README, LICENSE, CHANGELOG, .vscodeignore, .gitignore.
 
 ## [0.0.1]
 

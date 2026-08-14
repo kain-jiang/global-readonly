@@ -1,64 +1,90 @@
+<div align="center">
+
 # Global Readonly
 
-Toggle **read-only mode for the entire workspace** with one click, powered by VS Code's built-in [`files.readonlyInclude`](https://code.visualstudio.com/api/references/vscode-api#workspace-configuration) feature — no file watchers, no monkey patching.
+**一键切换整个工作区为只读的 VS Code 扩展**
 
-## Features
+[English](./README.en.md) · [中文](./README.md)
 
-- **One-click toggle** — click the status bar item (or run a command) to make the whole workspace read-only / writable.
-- **Uses native VS Code settings** — sets `files.readonlyInclude: { "**": true }`, so read-only state is enforced by VS Code itself, persists across restarts, and respects the standard read-only UX (no accidental edits).
-- **Preserves your rules** — when disabling, only the `**` entry is removed; any other patterns you added to `files.readonlyInclude` are kept.
-- **Works without a workspace** — falls back to writing the user-level (global) setting when no folder is open.
-- **Status bar indicator** — shows `$(lock) Readonly` / `$(unlock) Readonly` and reflects the live state even if you change the setting manually.
+[![License](https://img.shields.io/github/license/kain-jiang/global-readonly)](https://github.com/kain-jiang/global-readonly/blob/main/LICENSE)
+[![CI](https://github.com/kain-jiang/global-readonly/actions/workflows/ci.yml/badge.svg)](https://github.com/kain-jiang/global-readonly/actions/workflows/ci.yml)
+[![Version](https://img.shields.io/badge/VS%20Code-%5E1.77.0-blue)](https://code.visualstudio.com/updates/v1_77)
+[![Stars](https://img.shields.io/github/stars/kain-jiang/global-readonly?style=social)](https://github.com/kain-jiang/global-readonly)
 
-## Commands
+</div>
 
-| Command | Description |
+---
+
+基于 VS Code 内置的 [`files.readonlyInclude`](https://code.visualstudio.com/docs/getstarted/settings) 实现全局只读，**无需文件监听、无需 Monkey Patch**，只读状态完全由 VS Code 原生机制保证，重启后依然生效。
+
+## 特性
+
+- **一键切换** —— 点击状态栏图标（或执行命令）即可让整个工作区只读 / 可写。
+- **原生机制** —— 写入 `files.readonlyInclude: { "**": true }`，由 VS Code 自身强制执行只读，拥有标准的只读体验（不会误编辑、可安全退出）。
+- **`.vscode/` 保持可写** —— 自动通过 `files.readonlyExclude` 排除 `.vscode/` 目录，保证开关可以反复切换、设置能够正常持久化。
+- **保留你的规则** —— 关闭时只移除 `**` 条目，你自定义的其他 `readonlyInclude` / `readonlyExclude` 规则全部保留。
+- **无工作区也能用** —— 未打开文件夹时自动回退写入用户级（全局）设置。
+- **状态栏指示** —— 显示 `$(lock) Readonly` / `$(unlock) Readonly`，即使手动改过设置也会实时同步状态。
+
+## 命令
+
+| 命令 | 说明 |
 | --- | --- |
-| `Global Readonly: Enable` | Make the entire workspace read-only |
-| `Global Readonly: Disable` | Make the entire workspace writable |
-| `Global Readonly: Toggle` | Switch between read-only and writable |
+| `Global Readonly: Enable` | 使整个工作区只读 |
+| `Global Readonly: Disable` | 使整个工作区可写 |
+| `Global Readonly: Toggle` | 在只读 / 可写之间切换 |
 
-## Usage
+## 使用方法
 
-1. Install the extension (from VSIX or the Marketplace).
-2. Click the **Readonly** item in the status bar (right side) to toggle, or run any of the commands above from the Command Palette (`Ctrl+Shift+P`).
+1. 安装扩展（通过 VSIX 或 Marketplace）。
+2. 点击状态栏右侧的 **Readonly** 图标即可切换，或从命令面板（`Ctrl+Shift+P`）执行上述任一命令。
 
-When enabled, every file in the workspace becomes read-only in the editor.
+启用后，工作区内的所有文件都会在编辑器中变为只读。
 
-## Settings
+## 设置
 
-| Setting | Default | Description |
+| 设置项 | 默认值 | 说明 |
 | --- | --- | --- |
-| `globalReadonly.showStatusBar` | `true` | Show the status bar item that displays state and toggles on click. |
+| `globalReadonly.showStatusBar` | `true` | 是否显示状态栏图标（点击可切换） |
 
-## Requirements
+## 工作原理
 
-- VS Code `^1.77.0` (where `files.readonlyInclude` / `files.readonlyExclude` were introduced).
+扩展读写 VS Code 内置的 `files.readonlyInclude` 配置：
 
-## How it works
-
-The extension reads and writes the built-in `files.readonlyInclude` configuration:
-
-```json
+```jsonc
 {
-  "files.readonlyInclude": {
-    "**": true
-  }
+  // 启用后自动写入（同时写入 readonlyExclude 保证 .vscode/ 可写）
+  "files.readonlyInclude": { "**": true },
+  "files.readonlyExclude": { "**/.vscode/**": true }
 }
 ```
 
-The `**` glob matches every file in the workspace, marking them read-only. Disabling simply removes that entry, leaving any user-defined patterns untouched.
+`**` 匹配工作区内的所有文件，使它们变为只读。关闭时仅移除这些条目，不触碰你已有的任何规则。
 
-## Development
+> 为什么需要 `files.readonlyExclude`？因为 `**` 也会把 `.vscode/settings.json` 自己锁成只读，导致配置 API 无法再写入、无法关闭。排除 `.vscode/` 后开关始终可正常工作（这也是 VS Code 官方推荐的逃生方案）。
+
+## 环境要求
+
+- VS Code `^1.77.0`（`files.readonlyInclude` / `files.readonlyExclude` 自该版本引入）。
+
+## 开发
 
 ```sh
-npm install        # install dev dependencies
-npm test           # run the test suite in a headless VS Code
-npm run package    # build global-readonly-<version>.vsix
+npm install        # 安装开发依赖
+npm test           # 在无头 VS Code 中运行测试
+npm run package    # 打包生成 global-readonly-<version>.vsix
 ```
 
-Press `F5` inside the repo to launch an Extension Development Host.
+在仓库内按 `F5` 即可启动 Extension Development Host 进行调试。
 
-## License
+## 贡献
 
-[MIT](LICENSE)
+欢迎提交 Issue 与 Pull Request，请阅读 [贡献指南](./CONTRIBUTING.md) 与 [行为准则](./CODE_OF_CONDUCT.md)。
+
+## 版本记录
+
+参见 [CHANGELOG.md](./CHANGELOG.md)。
+
+## 开源协议
+
+[MIT](./LICENSE)
