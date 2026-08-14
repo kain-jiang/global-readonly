@@ -1,0 +1,58 @@
+{
+  "name": "global-readonly",
+  "displayName": "Global Readonly",
+  "description": "Toggle read-only mode for the entire workspace using VS Code's built-in files.readonlyInclude feature.",
+  "version": "0.0.2",
+  "publisher": "kain-jiang",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kain-jiang/global-readonly.git"
+  },
+  "engines": {
+    "vscode": "^1.77.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "globalReadonly.enable",
+        "title": "Global Readonly: Enable"
+      },
+      {
+        "command": "globalReadonly.disable",
+        "title": "Global Readonly: Disable"
+      },
+      {
+        "command": "globalReadonly.toggle",
+        "title": "Global Readonly: Toggle"
+      }
+    ],
+    "configuration": {
+      "title": "Global Readonly",
+      "properties": {
+        "globalReadonly.showStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show a status bar item that displays the read-only state and toggles it on click."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "test": "node ./test/runTest.js",
+    "package": "vsce package",
+    "vscode:prepublish": "node -e \"console.log('no build required')\""
+  },
+  "devDependencies": {
+    "@vscode/test-electron": "^2.4.1",
+    "@vscode/vsce": "^3.3.2",
+    "mocha": "^10.7.3"
+  }
+}

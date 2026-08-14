@@ -1,0 +1,9 @@
+node_modules/
+test/
+test-fixture/
+.gitignore
+.vscode/**
+!.vscode/launch.json
+!.vscode/tasks.json
+*.vsix
+*.log
