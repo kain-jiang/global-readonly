@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.0.4]
+
+- Add `enablement` conditions: Enable / Disable / Toggle commands are disabled when no workspace folder is open (`workspaceFolderCount > 0`).
+- Migrate from npm to Bun (`bun@1.3.14`), replacing `package-lock.json` with `bun.lock`.
+- CI: run tests via Bun, narrow test exclude pattern to `.vscode/settings.json`, await extension activation in tests.
+
 ## [0.0.3]
 
 - Add extension icon and marketplace metadata (keywords, homepage, gallery banner).
