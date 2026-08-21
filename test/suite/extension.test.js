@@ -21,6 +21,9 @@ async function updateFiles(key, value) {
 
 suite('Global Readonly', () => {
   test('extension activates and registers commands', async () => {
+    const extension = vscode.extensions.getExtension('tiramission.global-readonly');
+    assert.ok(extension, 'extension not found');
+    await extension.activate();
     const commands = await vscode.commands.getCommands(true);
     for (const name of ['globalReadonly.toggle', 'globalReadonly.enable', 'globalReadonly.disable']) {
       assert.ok(commands.includes(name), `missing command ${name}`);
