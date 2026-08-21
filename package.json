@@ -3,7 +3,7 @@
   "displayName": "Global Readonly",
   "description": "One-click toggle for making the entire workspace read-only, powered by VS Code's built-in files.readonlyInclude feature.",
   "version": "0.0.3",
-  "publisher": "kain-jiang",
+  "publisher": "tiramission",
   "license": "MIT",
   "repository": {
     "type": "git",
