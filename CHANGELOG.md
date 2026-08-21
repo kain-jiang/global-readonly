@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.0.5]
+
+- Fix flaky test: await extension activation before asserting registered commands.
+- Add tag-triggered release workflow: tests, VSIX packaging, GitHub Release with changelog-based notes, and automatic publishing to the VS Code Marketplace.
+
 ## [0.0.4]
 
 - Add `enablement` conditions: Enable / Disable / Toggle commands are disabled when no workspace folder is open (`workspaceFolderCount > 0`).
