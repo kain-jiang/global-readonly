@@ -21,9 +21,9 @@
 
 - **一键切换** —— 点击状态栏图标（或执行命令）即可让整个工作区只读 / 可写。
 - **原生机制** —— 写入 `files.readonlyInclude: { "**": true }`，由 VS Code 自身强制执行只读，拥有标准的只读体验（不会误编辑、可安全退出）。
-- **`.vscode/` 保持可写** —— 自动通过 `files.readonlyExclude` 排除 `.vscode/` 目录，保证开关可以反复切换、设置能够正常持久化。
+- **仅设置文件保持可写** —— 自动通过 `files.readonlyExclude` 仅排除 `.vscode/settings.json`，保证开关可以反复切换、其他 `.vscode/` 文件仍保持只读。
 - **保留你的规则** —— 关闭时只移除 `**` 条目，你自定义的其他 `readonlyInclude` / `readonlyExclude` 规则全部保留。
-- **无工作区也能用** —— 未打开文件夹时自动回退写入用户级（全局）设置。
+- **仅工作区可用** —— 未打开工作区时，命令和状态栏入口都会隐藏或禁用，不会修改全局设置。
 - **状态栏指示** —— 显示 `$(lock) Readonly` / `$(unlock) Readonly`，即使手动改过设置也会实时同步状态。
 
 ## 命令
@@ -53,15 +53,15 @@
 
 ```jsonc
 {
-  // 启用后自动写入（同时写入 readonlyExclude 保证 .vscode/ 可写）
+  // 启用后自动写入（同时写入 readonlyExclude 保证设置文件可写）
   "files.readonlyInclude": { "**": true },
-  "files.readonlyExclude": { "**/.vscode/**": true }
+  "files.readonlyExclude": { "**/.vscode/settings.json": true }
 }
 ```
 
 `**` 匹配工作区内的所有文件，使它们变为只读。关闭时仅移除这些条目，不触碰你已有的任何规则。
 
-> 为什么需要 `files.readonlyExclude`？因为 `**` 也会把 `.vscode/settings.json` 自己锁成只读，导致配置 API 无法再写入、无法关闭。排除 `.vscode/` 后开关始终可正常工作（这也是 VS Code 官方推荐的逃生方案）。
+> 为什么需要 `files.readonlyExclude`？因为 `**` 也会把 `.vscode/settings.json` 自己锁成只读，导致配置 API 无法再写入、无法关闭。仅排除设置文件后开关始终可正常工作，同时 `.vscode/` 中的其他文件仍保持只读。
 
 ## 环境要求
 
@@ -70,9 +70,9 @@
 ## 开发
 
 ```sh
-npm install        # 安装开发依赖
-npm test           # 在无头 VS Code 中运行测试
-npm run package    # 打包生成 global-readonly-<version>.vsix
+bun install        # 安装开发依赖
+bun run test        # 在无头 VS Code 中运行测试
+bun run package     # 打包生成 global-readonly-<version>.vsix
 ```
 
 在仓库内按 `F5` 即可启动 Extension Development Host 进行调试。

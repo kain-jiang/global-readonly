@@ -2,7 +2,7 @@
   "name": "global-readonly",
   "displayName": "Global Readonly",
   "description": "One-click toggle for making the entire workspace read-only, powered by VS Code's built-in files.readonlyInclude feature.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "tiramission",
   "license": "MIT",
   "repository": {
@@ -29,6 +29,7 @@
   "engines": {
     "vscode": "^1.77.0"
   },
+  "packageManager": "bun@1.3.14",
   "categories": [
     "Other"
   ],
@@ -41,19 +42,38 @@
       {
         "command": "globalReadonly.enable",
         "title": "Global Readonly: Enable",
-        "category": "Global Readonly"
+        "category": "Global Readonly",
+        "enablement": "workspaceFolderCount > 0"
       },
       {
         "command": "globalReadonly.disable",
         "title": "Global Readonly: Disable",
-        "category": "Global Readonly"
+        "category": "Global Readonly",
+        "enablement": "workspaceFolderCount > 0"
       },
       {
         "command": "globalReadonly.toggle",
         "title": "Global Readonly: Toggle",
-        "category": "Global Readonly"
+        "category": "Global Readonly",
+        "enablement": "workspaceFolderCount > 0"
       }
     ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "globalReadonly.enable",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "globalReadonly.disable",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "globalReadonly.toggle",
+          "when": "workspaceFolderCount > 0"
+        }
+      ]
+    },
     "configuration": {
       "title": "Global Readonly",
       "properties": {

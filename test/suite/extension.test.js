@@ -2,7 +2,7 @@ const assert = require('assert');
 const vscode = require('vscode');
 
 const GLOBAL_PATTERN = '**';
-const VSCODE_EXCLUDE_PATTERN = '**/.vscode/**';
+const VSCODE_EXCLUDE_PATTERN = '**/.vscode/settings.json';
 const USER_PATTERN = 'src/**';
 
 function getInclude() {
