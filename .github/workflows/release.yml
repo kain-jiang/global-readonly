@@ -59,3 +59,7 @@ jobs:
           else
             gh release create "$REF_NAME" ./*.vsix --title "$REF_NAME" --generate-notes --verify-tag
           fi
+      - name: Publish to VS Code Marketplace
+        env:
+          VSCE_PAT: ${{ secrets.TIRAMISSION_AZURE_PAT }}
+        run: bunx vsce publish
